@@ -7,12 +7,17 @@
   rel="stylesheet"
   href="{{  url_for('static', filename='score.css') }}"
 />
+<link
+  rel="stylesheet"
+  href="{{  url_for('static', filename='scoring.css') }}"
+/>
 <script src="{{ url_for('static', filename='js/subtitles-octopus.js') }}"></script>
 <script>
   // Use this config object to pass data from the jinja2 template to the splash.js code
   const PikaraokeConfig = {
     hasBgVideo: "{{ has_bg_video }}" == 'True',
     disableScore: "{{ disable_score }}" == 'True',
+    scoreUseMicrophone: "{{ score_use_microphone }}" == 'True',
     bgMusicVolume: "{{ bg_music_volume }}" * 1,
     disableBgMusic: "{{ disable_bg_music }}" == 'True',
     disableBgVideo: "{{ disable_bg_video }}" == 'True',
@@ -22,10 +27,12 @@
     translations: {
       socketConnectionLost: "{{ _('Connection lost. Is the server still running?') }}",
       unsupportedBrowser: "{{ _('This browser is not fully supported. You may experience streaming issues. Please use Chrome/Safari/Firefox/Edge for best results.') }}",
+      micUnavailable: "{{ _('Microphone unavailable for scoring. Using a random score instead.') }}",
     },
     scorePhrasesUrl: "{{ url_for('splash.get_score_phrases') }}",
   };
 </script>
+<script src="{{ url_for('static', filename='js/scoring.js') }}"></script>
 <script src="{{ url_for('static', filename='js/splash.js') }}"></script>
 {% endblock %} {% block body %}
 <div id="top-container" class="overlay">
@@ -104,6 +111,10 @@
   <video id="video" poster="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" disableRemotePlayback playsinline webkit-playsinline style="width: 100%; height: 100%; object-fit: contain;">
     <source id="video-source" src="" />
   </video>
+  <div id="score-overlay" style="display: none">
+    <div id="score-overlay-note">--</div>
+    <div id="score-overlay-value">0</div>
+  </div>
 </div>
 
 <div id="bg-video-container" class="video-container">

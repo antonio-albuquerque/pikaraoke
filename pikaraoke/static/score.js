@@ -57,7 +57,9 @@ async function rotateScore(scoreTextElement, duration) {
   }
 }
 
-async function startScore(staticPath) {
+// finalScore: a real 0-100 score from microphone scoring. When omitted (mic
+// disabled, denied, or unavailable), fall back to the random number.
+async function startScore(staticPath, finalScore = null) {
   try {
     const r = await fetch(PikaraokeConfig.scorePhrasesUrl);
     scoreReviews = await r.json();
@@ -69,7 +71,7 @@ async function startScore(staticPath) {
   const scoreTextElement = $("#score-number-text");
   const scoreReviewElement = $("#score-review-text");
 
-  const scoreValue = getScoreValue();
+  const scoreValue = finalScore != null ? finalScore : getScoreValue();
   const scoreData = getScoreData(scoreValue);
 
   const drums = new Audio(staticPath + "sounds/score-drums.mp3");

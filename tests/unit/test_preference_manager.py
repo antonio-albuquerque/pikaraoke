@@ -275,6 +275,7 @@ def test_preference_manager_defaults_exist():
         "bg_music_volume",
         "disable_bg_video",
         "disable_score",
+        "score_use_microphone",
         "limit_user_songs_by",
         "enable_fair_queue",
         "cdg_pixel_scaling",

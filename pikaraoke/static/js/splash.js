@@ -25,6 +25,7 @@ let scoreReviews = {
 let isMaster = false;
 let uiScale = null;
 let clockIntervalId = null;
+let scoringSession = null;
 
 // Browser detection
 const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
@@ -102,10 +103,54 @@ const hideVideo = () => {
   $("#video-container").hide();
 }
 
+const scoreOverlayTier = (value) => {
+  if (value >= 85) return "tier-great";
+  if (value >= 70) return "tier-good";
+  if (value >= 50) return "tier-mid";
+  if (value >= 30) return "tier-warm";
+  return "tier-low";
+};
+
+const updateScoreOverlay = (update) => {
+  const overlay = $("#score-overlay");
+  $("#score-overlay-value").text(update.live);
+  $("#score-overlay-note").text(update.voiced ? update.note : "--");
+  overlay
+    .removeClass("tier-low tier-warm tier-mid tier-good tier-great")
+    .addClass(scoreOverlayTier(update.live));
+};
+
+const hideScoreOverlay = () => {
+  $("#score-overlay").hide();
+};
+
+// Start microphone scoring for this song (master only). On any failure
+// (denied mic, insecure context, no Web Audio) leaves scoringSession null so
+// the score screen falls back to the random number.
+const startScoringIfEnabled = async () => {
+  if (!isMaster || !PikaraokeConfig.scoreUseMicrophone || PikaraokeConfig.disableScore) return;
+  if (scoringSession || typeof ScoringSession === "undefined") return;
+  const session = new ScoringSession({ onUpdate: updateScoreOverlay });
+  const started = await session.start();
+  if (!started) {
+    flashNotification(PikaraokeConfig.translations.micUnavailable, "is-warning");
+    return;
+  }
+  scoringSession = session;
+  $("#score-overlay").show();
+};
+
 const endSong = async (reason = null, showScore = false) => {
+  // Always stop scoring (releases the mic) even when the score screen is skipped.
+  let finalScore = null;
+  if (scoringSession) {
+    finalScore = scoringSession.stop();
+    scoringSession = null;
+    hideScoreOverlay();
+  }
   if (showScore && !PikaraokeConfig.disableScore) {
     isScoreShown = true;
-    await startScore("/static/");
+    await startScore("/static/", finalScore);
     isScoreShown = false;
   }
   currentVideoUrl = null;
@@ -437,6 +482,7 @@ const setupVideoPlayer = () => {
     $("#video-container").show();
     if (isMaster) {
       setTimeout(() => { socket.emit("start_song") }, 1200);
+      startScoringIfEnabled();
     }
   });
 
@@ -513,6 +559,7 @@ const PREFERENCE_EFFECTS = {
   disable_bg_video:    (v) => toggleBGMedia("disableBgVideo", playBGVideo, v),
   disable_bg_music:    (v) => toggleBGMedia("disableBgMusic", playBGMusic, v),
   disable_score:       (v) => { PikaraokeConfig.disableScore = v; },
+  score_use_microphone: (v) => { PikaraokeConfig.scoreUseMicrophone = v; },
   show_splash_clock:   (v) => {
     PikaraokeConfig.showSplashClock = v;
     v ? startClock() : (stopClock(), $("#clock").hide());

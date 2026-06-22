@@ -110,6 +110,7 @@ class Karaoke:
         disable_bg_music: bool | None = None,
         disable_bg_video: bool | None = None,
         disable_score: bool | None = None,
+        score_use_microphone: bool | None = None,
         hide_notifications: bool | None = None,
         hide_overlay: bool | None = None,
         hide_url: bool | None = None,
@@ -149,6 +150,8 @@ class Karaoke:
             bg_video_path: Path to background video file.
             disable_bg_video: Disable background video.
             disable_score: Disable score screen.
+            score_use_microphone: Compute the score from live microphone pitch
+                analysis instead of a random number.
             limit_user_songs_by: Max songs per user in queue (0 = unlimited).
             avsync: Audio/video sync adjustment in seconds.
             config_file_path: Path to config.ini file.

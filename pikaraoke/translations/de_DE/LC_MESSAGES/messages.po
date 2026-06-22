@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-03-20 08:10+1100\n"
+"POT-Creation-Date: 2026-06-22 12:54-0300\n"
 "PO-Revision-Date: 2025-01-13 22:53-0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: de_DE\n"
@@ -20,14 +20,14 @@ msgstr ""
 
 #. Message shown after the song is transposed, first is the semitones and then
 #. the song name
-#: karaoke.py:453
+#: karaoke.py:459
 #, python-format
 msgid "Transposing by %s semitones: %s"
 msgstr "Transponieren um %s Halbtöne: %s"
 
 #. Message shown after the volume is changed, will be followed by the volume
 #. level
-#: karaoke.py:469
+#: karaoke.py:475
 #, python-format
 msgid "Volume: %s"
 msgstr "Lautstärke: %s"
@@ -104,19 +104,19 @@ msgstr "Fortsetzen: %s"
 msgid "Pause: %s"
 msgstr "Pause: %s"
 
-#: lib/preference_manager.py:133
+#: lib/preference_manager.py:135
 msgid "Your preferences were changed successfully"
 msgstr "Die Einstellungen wurden erfolgreich geändert"
 
-#: lib/preference_manager.py:136 templates/info.html:19
+#: lib/preference_manager.py:138 templates/info.html:19
 msgid "Something went wrong! Your preferences were not changed"
 msgstr "Etwas ist schiefgelaufen! Die Einstellungen wurden nicht geändert"
 
-#: lib/preference_manager.py:153
+#: lib/preference_manager.py:155
 msgid "Your preferences were cleared successfully"
 msgstr "Die Einstellungen wurden erfolgreich zurückgesetzt"
 
-#: lib/preference_manager.py:156
+#: lib/preference_manager.py:158
 msgid "Something went wrong! Your preferences were not cleared"
 msgstr "Etwas ist schiefgelaufen! Die Einstellungen wurden nicht zurückgesetzt"
 
@@ -307,7 +307,7 @@ msgstr "Fehler beim Umbenennen der Datei: '%s' in '%s', %sbereits"
 msgid "Renamed file: %s to %s"
 msgstr "Datei umbenannt: %s in %s"
 
-#: routes/info.py:100
+#: routes/info.py:102
 msgid "CPU usage query unsupported"
 msgstr "CPU-Nutzungsabfrage wird nicht unterstützt"
 
@@ -560,7 +560,7 @@ msgstr "Warteschlange"
 
 #. Navigation link for the search page add songs to the queue.
 #. Submit button on the search form for searching YouTube.
-#: templates/base.html:221 templates/search.html:589
+#: templates/base.html:221 templates/search.html:619
 msgid "Search"
 msgstr "Suche"
 
@@ -811,7 +811,7 @@ msgstr "Praktischer URL-QR-Code, um ihn mit einem Freund zu teilen:"
 
 # auto-translated
 #. Title of the admin section.
-#: templates/info.html:215 templates/info.html:578
+#: templates/info.html:215 templates/info.html:590
 msgid "Admin"
 msgstr "Admin"
 
@@ -881,43 +881,51 @@ msgstr "Hintergrundmusik deaktivieren"
 msgid "Disable the score screen after each song"
 msgstr "Bewertungsbildschirm nach jedem Lied deaktivieren"
 
-#. Checkbox label which enable/disables notifications on the splash screen
+#. Checkbox label which scores the singer from the microphone instead of a
+#. random number. A headset or dedicated mic gives the best results.
 #: templates/info.html:300
+msgid ""
+"Score from microphone (requires mic access on the splash screen; best "
+"with a headset)"
+msgstr ""
+
+#. Checkbox label which enable/disables notifications on the splash screen
+#: templates/info.html:306
 msgid "Hide notifications"
 msgstr "Benachrichtigungen ausblenden"
 
 # auto-translated
 #. Checkbox label which enable/disables the digital clock on the splash screen
-#: templates/info.html:306
+#: templates/info.html:312
 msgid "Show splash clock"
 msgstr "Splash-Uhr anzeigen"
 
 #. Checkbox label which enable/disables the URL display
-#: templates/info.html:311
+#: templates/info.html:317
 msgid "Hide the URL and QR code"
 msgstr "URL und QR-Code ausblenden"
 
 #. Checkbox label which enable/disables showing overlay data on the splash
 #. screen
-#: templates/info.html:317
+#: templates/info.html:323
 msgid "Hide all overlays, including now playing, up next, and QR code"
 msgstr ""
 "Alle Overlays ausblenden, einschließlich 'Jetzt läuft', 'Als Nächstes' "
 "und QR-Code"
 
 #. Numberbox label for setting the default video volume
-#: templates/info.html:323
+#: templates/info.html:329
 msgid "Default volume of the videos (min 0, max 100)"
 msgstr "Standardlautstärke der Videos (min 0, max 100)"
 
 #. Numberbox label for setting the background music volume
-#: templates/info.html:329
+#: templates/info.html:335
 msgid "Volume of the background music (min 0, max 100)"
 msgstr "Lautstärke der Hintergrundmusik (min 0, max 100)"
 
 #. Numberbox label for setting the inactive delay before showing the
 #. screensaver
-#: templates/info.html:336
+#: templates/info.html:342
 msgid ""
 "The amount of idle time in seconds before the screen saver activates. Set"
 " to 0 to disable it."
@@ -926,19 +934,19 @@ msgstr ""
 "auf 0 setzen."
 
 #. Numberbox label for setting the delay before playing the next song
-#: templates/info.html:343
+#: templates/info.html:349
 msgid "The delay in seconds before starting the next song"
 msgstr "Die Verzögerung in Sekunden vor dem Start des nächsten Liedes"
 
 # auto-translated
 #. Title text for the Score Phrases section of preferences
-#: templates/info.html:354
+#: templates/info.html:360
 msgid "Score phrases"
 msgstr "Bewerten Sie Phrasen"
 
 # auto-translated
 #. Help text explaining how to add phrases
-#: templates/info.html:361
+#: templates/info.html:367
 msgid "Add one phrase per line in each box and hit save."
 msgstr ""
 "Fügen Sie in jedes Feld eine Phrase pro Zeile ein und klicken Sie auf "
@@ -946,68 +954,68 @@ msgstr ""
 
 # auto-translated
 #. Title for LOW Score Phrases
-#: templates/info.html:363
+#: templates/info.html:369
 msgid "LOW Score Phrases (score < 30)"
 msgstr "Sätze mit NIEDRIGER Punktzahl (Punktzahl < 30)"
 
 # auto-translated
 #. Placeholder for the low score phrases textarea
-#: templates/info.html:365
+#: templates/info.html:371
 msgid "Could be better..."
 msgstr "Könnte besser sein..."
 
 # auto-translated
 #. Title for MID Score Phrases
-#: templates/info.html:368
+#: templates/info.html:374
 msgid "MID Score Phrases (30 > score < 60)"
 msgstr "MID-Score-Sätze (30 > Score < 60)"
 
 # auto-translated
 #. Placeholder for the MID score phrases textarea
-#: templates/info.html:370
+#: templates/info.html:376
 msgid "That was ok..."
 msgstr "Das war ok..."
 
 # auto-translated
 #. Title for HIGH Score Phrases
-#: templates/info.html:373
+#: templates/info.html:379
 msgid "HIGH Score Phrases (60 < score)"
 msgstr "Phrasen mit HOHER Punktzahl (60 < Punktzahl)"
 
 # auto-translated
 #. Placeholder for the HIGH score phrases textarea
-#: templates/info.html:375
+#: templates/info.html:381
 msgid "Wonderfull..."
 msgstr "Wunderbar..."
 
 #. Title text for the language settings section of preferences
-#: templates/info.html:383
+#: templates/info.html:389
 msgid "Language settings"
 msgstr "Spracheinstellungen"
 
 # auto-translated
 #. Label for language selection dropdown
-#: templates/info.html:396
+#: templates/info.html:402
 msgid "Preferred language (requires restart)"
 msgstr "Bevorzugte Sprache (Neustart erforderlich)"
 
 #. Title text for the server settings section of preferences
-#: templates/info.html:405
+#: templates/info.html:411
 msgid "Server settings"
 msgstr "Servereinstellungen"
 
 #. Checkbox label which enable/disables audio volume normalization
-#: templates/info.html:412
+#: templates/info.html:418
 msgid "Normalize audio volume"
 msgstr "Audio-Lautstärke normalisieren"
 
 #. Checkbox label which enable/disables high quality video downloads
-#: templates/info.html:418
+#: templates/info.html:424
 msgid "Download high quality videos"
 msgstr "Videos in hoher Qualität herunterladen"
 
 #. Checkbox label which enable/disables full transcode before playback
-#: templates/info.html:424
+#: templates/info.html:430
 msgid ""
 "Transcode video completely before playing (better browser compatibility, "
 "slower starts). Buffer size will be ignored.*"
@@ -1017,7 +1025,7 @@ msgstr ""
 
 # auto-translated
 #. Checkbox label which enable/disables CDG pixel scaling
-#: templates/info.html:430
+#: templates/info.html:436
 msgid ""
 "Enable CDG pixel scaling (crisper visuals for CDG files, may increase CPU"
 " usage)"
@@ -1026,8 +1034,18 @@ msgstr ""
 " kann die CPU-Auslastung erhöhen)."
 
 # auto-translated
+#. Checkbox label which enables automatic cleanup of YouTube song titles
+#: templates/info.html:442
+msgid ""
+"Enable automatic YouTube title cleanup (strips noise words like \"Karaoke"
+" Version HD\")"
+msgstr ""
+"Aktivieren Sie die automatische Bereinigung von YouTube-Titeln (entfernen"
+" Sie Füllwörter wie „Karaoke Version HD“)."
+
+# auto-translated
 #. Numberbox label for audio video synchronization
-#: templates/info.html:437
+#: templates/info.html:449
 msgid ""
 "Fix the audio and video synchronization in seconds (negative = advances "
 "audio | positive = delays audio)"
@@ -1036,7 +1054,7 @@ msgstr ""
 "(negativ = Audio vorrücken | positiv = Audio verzögern)"
 
 #. Numberbox label for limitting the number of songs for each player
-#: templates/info.html:444
+#: templates/info.html:456
 msgid "Limit of songs an individual user can add to the queue (0 = unlimited)"
 msgstr ""
 "Limit an Liedern, die ein Benutzer zur Warteschlange hinzufügen kann (0 ="
@@ -1044,14 +1062,14 @@ msgstr ""
 
 # auto-translated
 #. Checkbox label which enable/disables fair queue (round-robin) mode
-#: templates/info.html:450
+#: templates/info.html:462
 msgid "Enable fair queue (round-robin mode ensures users take turns)"
 msgstr ""
 "Faire Warteschlange aktivieren (Round-Robin-Modus sorgt dafür, dass sich "
 "die Benutzer abwechseln)"
 
 #. Numberbox label for setting the buffer size in kilobytes
-#: templates/info.html:457
+#: templates/info.html:469
 msgid ""
 "Buffer size in kilobytes. Transcode this amount of the video before "
 "sending it to the splash screen. "
@@ -1060,86 +1078,86 @@ msgstr ""
 "abgespielt wird."
 
 #. Text for the link where the user can clear all user preferences
-#: templates/info.html:470
+#: templates/info.html:482
 msgid "Clear preferences"
 msgstr "Einstellungen löschen"
 
 #. Title of the system data section.
-#: templates/info.html:478
+#: templates/info.html:490
 msgid "System Data"
 msgstr "Systemstatistiken"
 
 #. Header of the information section about the computer running Pikaraoke.
-#: templates/info.html:483
+#: templates/info.html:495
 msgid "System Info"
 msgstr "Systeminfo"
 
 #. The hardware platform
-#: templates/info.html:489
+#: templates/info.html:501
 msgid "Platform:"
 msgstr "Plattform:"
 
 #. The os version
-#: templates/info.html:491
+#: templates/info.html:503
 msgid "OS Version:"
 msgstr "OS-Version:"
 
 #. The version of the program "yt-dlp".
-#: templates/info.html:493
+#: templates/info.html:505
 msgid "yt-dlp version:"
 msgstr "yt-dlp-Version:"
 
 #. The version of the program "ffmpeg".
-#: templates/info.html:495
+#: templates/info.html:507
 msgid "FFmpeg version:"
 msgstr "FFmpeg-Version:"
 
 #. The version of Pikaraoke running right now.
-#: templates/info.html:497
+#: templates/info.html:509
 msgid "Pikaraoke version:"
 msgstr "Pikaraoke-Version:"
 
 #. Header of the information section about the System stats.
-#: templates/info.html:503
+#: templates/info.html:515
 msgid "System stats"
 msgstr "Systemstatistiken"
 
 # auto-translated
 #. The CPU usage of the computer running Pikaraoke.
-#: templates/info.html:509
+#: templates/info.html:521
 msgid "CPU:"
 msgstr "CPU:"
 
 # auto-translated
-#: templates/info.html:509 templates/info.html:511 templates/info.html:513
+#: templates/info.html:521 templates/info.html:523 templates/info.html:525
 msgid "Loading..."
 msgstr "Laden..."
 
 # auto-translated
 #. The disk usage of the computer running Pikaraoke. Used by downloaded songs.
-#: templates/info.html:511
+#: templates/info.html:523
 msgid "Disk Usage:"
 msgstr "Festplattennutzung:"
 
 # auto-translated
 #. The memory (RAM) usage of the computer running Pikaraoke.
-#: templates/info.html:513
+#: templates/info.html:525
 msgid "Memory:"
 msgstr "Erinnerung:"
 
 #. Title of the updates section.
-#: templates/info.html:520
+#: templates/info.html:532
 msgid "Updates"
 msgstr "Aktualisierungen"
 
 # auto-translated
 #. Label for the YT-DLP update on the updates section
-#: templates/info.html:525
+#: templates/info.html:537
 msgid "YT-DLP update"
 msgstr "YT-DLP-Update"
 
 #. Text explaining why you might want to update yt-dlp.
-#: templates/info.html:530
+#: templates/info.html:542
 #, python-format
 msgid ""
 "\n"
@@ -1154,13 +1172,13 @@ msgstr ""
 
 #. Text for the link which will try and update yt-dlp on the machine running
 #. Pikaraoke.
-#: templates/info.html:536
+#: templates/info.html:548
 msgid "Update yt-dlp"
 msgstr "yt-dlp aktualisieren"
 
 #. Help text which explains why updating yt-dlp can fail. The log is a file on
 #. the machine running Pikaraoke.
-#: templates/info.html:540
+#: templates/info.html:552
 msgid ""
 "* This update link above may fail if you don't have proper file "
 "permissions.\n"
@@ -1170,19 +1188,19 @@ msgstr ""
 "fehlschlagen. Pikaraoke-Log auf Fehler überprüfen."
 
 #. Title of the updates section.
-#: templates/info.html:552
+#: templates/info.html:564
 msgid "Other"
 msgstr "Sonstiges"
 
 #. Title for section containing a few other options on the Info page.
 #. Text for button
-#: templates/info.html:557 templates/info.html:569
+#: templates/info.html:569 templates/info.html:581
 msgid "Expand Raspberry Pi filesystem"
 msgstr "Raspberry Pi-Dateisystem erweitern"
 
 #. Explainitory text which explains why you might want to expand the
 #. filesystem.
-#: templates/info.html:562
+#: templates/info.html:574
 msgid ""
 "If you just installed the pre-built pikaraoke pi image and your SD card "
 "is larger than 4GB,\n"
@@ -1197,24 +1215,24 @@ msgstr ""
 
 # auto-translated
 #. Message for the log out user from admin mode button.
-#: templates/info.html:584
+#: templates/info.html:596
 msgid "Click here to logout from admin mode."
 msgstr "Klicken Sie hier, um sich vom Administratormodus abzumelden."
 
 # auto-translated
 #. Link which will log out the user from admin mode.
-#: templates/info.html:586
+#: templates/info.html:598
 msgid "Log out"
 msgstr "Abmelden"
 
 #. Title of the section on shutting down / turning off the machine running
 #. Pikaraoke.
-#: templates/info.html:593
+#: templates/info.html:605
 msgid "Shutdown"
 msgstr "Herunterfahren"
 
 #. Explainitory text which explains why to use the shutdown link.
-#: templates/info.html:600
+#: templates/info.html:612
 msgid ""
 "Don't just pull the plug! Always shut down your server properly to avoid "
 "data corruption."
@@ -1224,17 +1242,17 @@ msgstr ""
 
 #. Text for button which turns off Pikaraoke for everyone using it at your
 #. house.
-#: templates/info.html:607
+#: templates/info.html:619
 msgid "Quit Pikaraoke"
 msgstr "Pikaraoke beenden"
 
 #. Text for button which reboots the machine running Pikaraoke.
-#: templates/info.html:610
+#: templates/info.html:622
 msgid "Reboot System"
 msgstr "System neustarten"
 
 #. Text for button which turn soff the machine running Pikaraoke.
-#: templates/info.html:613
+#: templates/info.html:625
 msgid "Shutdown System"
 msgstr "System herunterfahren"
 
@@ -1346,37 +1364,37 @@ msgstr "Überspringen"
 msgid "Download queue"
 msgstr "Download-Warteschlange"
 
-#: templates/search.html:242
+#: templates/search.html:267
 msgid "Available songs in local library"
 msgstr "Verfügbare Lieder in der lokalen Bibliothek"
 
 #. Title for the search page.
-#: templates/search.html:574
+#: templates/search.html:604
 msgid "Search / Add New"
 msgstr "Suchen / Neu hinzufügen"
 
-#: templates/search.html:584
+#: templates/search.html:614
 msgid "Available Songs"
 msgstr "Verfügbare Lieder"
 
 #. Submit button on the search form when selecting a locally downloaded song.
 #. The button adds it to                                         the queue.
-#: templates/search.html:592
+#: templates/search.html:622
 msgid "Add to queue"
 msgstr "Zur Warteschlange hinzufügen"
 
 #. Link which clears the text from the search box.
-#: templates/search.html:598
+#: templates/search.html:628
 msgid "Clear"
 msgstr "Löschen"
 
 #. Checkbox label which enables more options when searching.
-#: templates/search.html:602
+#: templates/search.html:632
 msgid "Advanced"
 msgstr "Erweitert"
 
 #. Help text below the search bar.
-#: templates/search.html:617
+#: templates/search.html:647
 msgid ""
 "- Type a song (title/artist) to search\n"
 "\t\t\t\t\t\t\t\tthe available songs and click 'Add to queue' to add it to"
@@ -1387,7 +1405,7 @@ msgstr ""
 "Warteschlange hinzufügen."
 
 #. Additonal help text below the search bar.
-#: templates/search.html:621
+#: templates/search.html:651
 msgid ""
 "- If the song doesn't appear in\n"
 "\t\t\t\t\t\t\t\tthe \"Available Songs\" dropdown, click 'Search' to find "
@@ -1399,30 +1417,30 @@ msgstr ""
 #. Checkbox label which enables matching songs which are not karaoke versions
 #. (i.e. the songs still                                         have a singer
 #. and are not just instrumentals.)
-#: templates/search.html:637
+#: templates/search.html:667
 msgid "Include non-karaoke matches"
 msgstr "Nicht-Karaoke-Treffer einbeziehen"
 
 #. Label for an input which takes a YouTube url directly instead of searching
 #. titles.
-#: templates/search.html:643
+#: templates/search.html:673
 msgid "Direct download YouTube url:"
 msgstr "Direktes Herunterladen von einer YouTube-URL:"
 
 #. Checkbox label which marks the song to be added to the queue after it
 #. finishes downloading.
-#: templates/search.html:657 templates/search.html:700
+#: templates/search.html:687 templates/search.html:730
 msgid "Add to queue once downloaded"
 msgstr "Nach dem Herunterladen zur Warteschlange hinzufügen"
 
 #. Button label for the direct download form's submit button.
-#: templates/search.html:662
+#: templates/search.html:692
 msgid "Download"
 msgstr "Herunterladen"
 
 #. Html text which displays what was searched for, in quotes while the page is
 #. loading.
-#: templates/search.html:684
+#: templates/search.html:714
 #, python-format
 msgid ""
 "Searching YouTube for\n"
@@ -1431,7 +1449,7 @@ msgstr "Suche auf Youtube nach <small><i>'%(search_term)s'</i></small>"
 
 # auto-translated
 #. Html text which displays what was searched for, in quotes.
-#: templates/search.html:691
+#: templates/search.html:721
 #, python-format
 msgid ""
 "Search results for\n"
@@ -1441,12 +1459,12 @@ msgstr ""
 "\t\t\t<small><i>'%(search_string)s'</i></small>"
 
 # auto-translated
-#: templates/splash.html:23
+#: templates/splash.html:28
 msgid "Connection lost. Is the server still running?"
 msgstr "Verbindung verloren. Läuft der Server noch?"
 
 # auto-translated
-#: templates/splash.html:24
+#: templates/splash.html:29
 msgid ""
 "This browser is not fully supported. You may experience streaming issues."
 " Please use Chrome/Safari/Firefox/Edge for best results."
@@ -1455,23 +1473,27 @@ msgstr ""
 "Streaming-Probleme auf. Für optimale Ergebnisse verwenden Sie bitte "
 "Chrome/Safari/Firefox/Edge."
 
+#: templates/splash.html:30
+msgid "Microphone unavailable for scoring. Using a random score instead."
+msgstr ""
+
 #. Label for the next song to be played in the queue.
-#: templates/splash.html:89
+#: templates/splash.html:96
 msgid "Up next:"
 msgstr "Als Nächstes:"
 
 #. Label for the next singer in the queue.
-#: templates/splash.html:96
+#: templates/splash.html:103
 msgid "Next singer:"
 msgstr "Nächster Sänger:"
 
 #. The title of the score screen, telling the user their singing score
-#: templates/splash.html:118
+#: templates/splash.html:129
 msgid "Your Score"
 msgstr "Deine Punktzahl"
 
 #. Prompt for interaction in order to enable video autoplay.
-#: templates/splash.html:132
+#: templates/splash.html:143
 msgid ""
 "Due to limitations with browser permissions, you must interact\n"
 "      with the page once before it allows autoplay of videos. Pikaraoke "
@@ -1485,7 +1507,7 @@ msgstr ""
 "onClick=\"handleConfirmation()\">Bestätigen</a>."
 
 #. Button to confirm to enable video autoplay.
-#: templates/splash.html:145
+#: templates/splash.html:156
 msgid "Confirm"
 msgstr "Bestätigen"
 

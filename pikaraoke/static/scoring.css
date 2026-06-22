@@ -1,0 +1,50 @@
+/* Live microphone-scoring overlay shown over the video while singing. */
+
+#score-overlay {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px 14px;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.45);
+  color: #fff;
+  font-family: sans-serif;
+  text-align: center;
+  pointer-events: none;
+  transition: color 0.2s ease;
+}
+
+#score-overlay-note {
+  font-size: 18px;
+  font-weight: 600;
+  opacity: 0.85;
+  min-width: 2.5em;
+}
+
+#score-overlay-value {
+  font-size: 52px;
+  font-weight: 800;
+  line-height: 1;
+  text-shadow: 0 0 12px currentColor;
+}
+
+/* Color tiers mirror frank_karaoke's live feedback. */
+#score-overlay.tier-low {
+  color: #ff6b6b;
+}
+#score-overlay.tier-warm {
+  color: #ff9f43;
+}
+#score-overlay.tier-mid {
+  color: #00d2ff;
+}
+#score-overlay.tier-good {
+  color: #00ff88;
+}
+#score-overlay.tier-great {
+  color: #ffd700;
+}

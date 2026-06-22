@@ -296,6 +296,12 @@
 					</div>
 
 					<div class="user-preference-container">
+						<input id="pref-score-mic" type="checkbox" class="user-preference-checkbox checkbox" data-pref="score_use_microphone" {% if score_use_microphone == True %}checked{% endif %}>
+						<label class="label" for="pref-score-mic">{# MSG: Checkbox label which scores the singer from the microphone instead of a random number. A headset or dedicated mic gives the best results. #} {% trans %}Score from microphone (requires mic access on the splash screen; best with a headset){% endtrans %}
+						</label>
+					</div>
+
+					<div class="user-preference-container">
 						<input id="pref-notifications" type="checkbox" class="user-preference-checkbox checkbox" data-pref="hide_notifications" {% if hide_notifications == True %}checked{% endif %}>
 						<label class="label" for="pref-notifications">{# MSG: Checkbox label which enable/disables notifications on the splash screen #} {% trans %}Hide notifications{% endtrans %}
 						</label>
