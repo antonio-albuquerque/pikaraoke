@@ -33,6 +33,7 @@
   };
 </script>
 <script src="{{ url_for('static', filename='js/scoring.js') }}"></script>
+<script src="{{ url_for('static', filename='js/pitch-viz.js') }}"></script>
 <script src="{{ url_for('static', filename='js/splash.js') }}"></script>
 {% endblock %} {% block body %}
 <div id="top-container" class="overlay">
@@ -112,8 +113,17 @@
     <source id="video-source" src="" />
   </video>
   <div id="score-overlay" style="display: none">
-    <div id="score-overlay-note">--</div>
-    <div id="score-overlay-value">0</div>
+    <canvas id="pitch-trail"></canvas>
+    <div id="score-hud">
+      <div id="score-overlay-value">0</div>
+      <div id="tuner">
+        <div id="tuner-note">--</div>
+        <div id="tuner-bar">
+          <div id="tuner-center"></div>
+          <div id="tuner-needle"></div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 

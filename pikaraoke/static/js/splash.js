@@ -26,6 +26,14 @@ let isMaster = false;
 let uiScale = null;
 let clockIntervalId = null;
 let scoringSession = null;
+let pitchViz = null;
+// Live backing-track pitch analysis (fallback reference when no UltraStar chart).
+let trackCtx = null;
+let trackSource = null;
+let trackAnalyser = null;
+let trackDetector = null;
+let trackFrame = null;
+let trackTimer = null;
 
 // Browser detection
 const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
@@ -112,16 +120,17 @@ const scoreOverlayTier = (value) => {
 };
 
 const updateScoreOverlay = (update) => {
-  const overlay = $("#score-overlay");
   $("#score-overlay-value").text(update.live);
-  $("#score-overlay-note").text(update.voiced ? update.note : "--");
-  overlay
+  $("#score-hud")
     .removeClass("tier-low tier-warm tier-mid tier-good tier-great")
     .addClass(scoreOverlayTier(update.live));
+  if (pitchViz) pitchViz.update(update, getVideoPlayer().currentTime);
 };
 
 const hideScoreOverlay = () => {
   $("#score-overlay").hide();
+  stopTrackAnalyzer();
+  if (pitchViz) pitchViz.stop();
 };
 
 // Start microphone scoring for this song (master only). On any failure
@@ -137,7 +146,91 @@ const startScoringIfEnabled = async () => {
     return;
   }
   scoringSession = session;
+  if (!pitchViz && typeof PitchViz !== "undefined") {
+    pitchViz = new PitchViz(
+      document.getElementById("pitch-trail"),
+      document.getElementById("tuner-note"),
+      document.getElementById("tuner-needle")
+    );
+  }
+  if (pitchViz) {
+    pitchViz.start();
+    configureReference();
+  }
   $("#score-overlay").show();
+};
+
+// Choose the expected-note reference for this song: an UltraStar .txt chart if
+// one exists, otherwise live detection of the backing track's pitch.
+const configureReference = async () => {
+  if (!pitchViz) return;
+  let data = { source: "none", notes: [] };
+  try {
+    const r = await fetch("/splash/song_notes");
+    data = await r.json();
+  } catch (_e) {
+    // Network failure: fall back to live detection below.
+  }
+  if (data.source === "ultrastar" && data.notes && data.notes.length) {
+    pitchViz.setReferenceNotes(data.notes);
+  } else {
+    pitchViz.setLiveReference();
+    startTrackAnalyzer();
+  }
+};
+
+// Detect the playing backing track's pitch (clean signal, not via mic) to draw as
+// the reference when no chart exists. The video audio is routed through Web Audio,
+// so it MUST stay connected to destination or playback would go silent. A media
+// element can only be tapped once, so the source/graph is created lazily and reused.
+const startTrackAnalyzer = () => {
+  if (typeof PitchDetector === "undefined") return;
+  const video = getVideoPlayer();
+  try {
+    if (!trackCtx) {
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      trackCtx = new AudioCtx();
+      trackSource = trackCtx.createMediaElementSource(video);
+      const highpass = trackCtx.createBiquadFilter();
+      highpass.type = "highpass";
+      highpass.frequency.value = 200;
+      highpass.Q.value = 0.707;
+      const lowpass = trackCtx.createBiquadFilter();
+      lowpass.type = "lowpass";
+      lowpass.frequency.value = 3500;
+      lowpass.Q.value = 0.707;
+      trackAnalyser = trackCtx.createAnalyser();
+      trackAnalyser.fftSize = 2048;
+      trackFrame = new Float32Array(trackAnalyser.fftSize);
+      trackDetector = new PitchDetector(trackCtx.sampleRate);
+      trackSource.connect(highpass);
+      highpass.connect(lowpass);
+      lowpass.connect(trackAnalyser);
+      trackSource.connect(trackCtx.destination); // keep the song audible
+    }
+    if (trackCtx.state === "suspended") trackCtx.resume();
+  } catch (e) {
+    console.warn("Track analyzer unavailable:", e.name);
+    return;
+  }
+  if (trackTimer) return;
+  trackTimer = setInterval(() => {
+    if (!trackAnalyser || !pitchViz) return;
+    trackAnalyser.getFloatTimeDomainData(trackFrame);
+    const { pitchHz, confidence } = trackDetector.detect(trackFrame);
+    if (pitchHz >= 60 && confidence >= 0.4) {
+      pitchViz.pushLiveReference(video.currentTime, pitchHz);
+    }
+  }, 80);
+};
+
+const stopTrackAnalyzer = () => {
+  if (trackTimer) {
+    clearInterval(trackTimer);
+    trackTimer = null;
+  }
+  // Leave trackCtx/trackSource intact: a media element can only be tapped once,
+  // and suspending the context would mute the video.
 };
 
 const endSong = async (reason = null, showScore = false) => {

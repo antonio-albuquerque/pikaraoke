@@ -10,6 +10,7 @@ from flask_smorest import Blueprint
 from pikaraoke.karaoke import Karaoke
 from pikaraoke.lib.current_app import get_karaoke_instance, get_site_name
 from pikaraoke.lib.raspi_wifi_config import get_raspi_wifi_text
+from pikaraoke.lib.ultrastar import parse_ultrastar, ultrastar_path_for
 
 _ = flask_babel.gettext
 
@@ -64,6 +65,22 @@ def _get_active_score_phrases(k: Karaoke) -> dict[str, list[str]]:
 def get_score_phrases():
     """Active score phrases as JSON — translated defaults or user-defined custom phrases."""
     return jsonify(_get_active_score_phrases(get_karaoke_instance()))
+
+
+@splash_bp.route("/splash/song_notes")
+def get_song_notes():
+    """Expected-note timeline for the current song from a sibling UltraStar .txt.
+
+    Returns {"source": "ultrastar", "notes": [...]} when a chart is present, or
+    {"source": "none", "notes": []} so the splash falls back to live track detection.
+    """
+    k = get_karaoke_instance()
+    song_file = k.playback_controller.now_playing_filename
+    txt_path = ultrastar_path_for(song_file) if song_file else None
+    if not txt_path:
+        return jsonify({"source": "none", "notes": []})
+    notes = parse_ultrastar(txt_path)
+    return jsonify({"source": "ultrastar" if notes else "none", "notes": notes})
 
 
 @splash_bp.route("/splash")
