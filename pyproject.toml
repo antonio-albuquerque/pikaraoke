@@ -44,6 +44,16 @@ translations = [
     "deep-translator>=1.11.4",
     "polib>=1.2.0",
 ]
+notes = [
+    "librosa>=0.10",
+    "numpy>=1.24",
+]
+separation = [
+    "demucs>=4.0",
+    # torchaudio 2.11+ delegates file I/O to torchcodec (uses the system FFmpeg,
+    # already a PiKaraoke requirement); without it Demucs can't write its stems.
+    "torchcodec>=0.1",
+]
 
 [project.scripts]
 pikaraoke = "pikaraoke.app:main"

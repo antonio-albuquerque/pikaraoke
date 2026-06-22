@@ -367,6 +367,12 @@ class ScoringSession {
   }
 
   _emit(pitchHz, note, confidence, voiced) {
+    // Cents from the nearest semitone (-50..+50), for the tuner needle.
+    let centsOff = 0;
+    if (voiced && pitchHz > 0) {
+      const midi = hzToMidi(pitchHz);
+      centsOff = (midi - Math.round(midi)) * 100;
+    }
     this.onUpdate({
       live: this.live,
       overall: this.overall,
@@ -374,6 +380,7 @@ class ScoringSession {
       note,
       confidence,
       voiced,
+      centsOff,
     });
   }
 }

@@ -102,3 +102,37 @@ class TestScorePhrasesEndpoint:
         data = response.get_json()
         assert set(data.keys()) == {"low", "mid", "high"}
         assert data["low"] == ["Bad", "Terrible"]
+
+
+class TestSongNotesEndpoint:
+    """Tests for GET /splash/song_notes."""
+
+    def _karaoke_playing(self, song_file):
+        k = MagicMock()
+        k.playback_controller.now_playing_filename = song_file
+        return k
+
+    @patch("pikaraoke.routes.splash.get_karaoke_instance")
+    def test_returns_none_when_nothing_playing(self, mock_get_instance, client):
+        mock_get_instance.return_value = self._karaoke_playing(None)
+        data = client.get("/splash/song_notes").get_json()
+        assert data == {"source": "none", "notes": []}
+
+    @patch("pikaraoke.routes.splash.get_karaoke_instance")
+    def test_returns_none_when_no_sibling_txt(self, mock_get_instance, client, tmp_path):
+        song = tmp_path / "Song---abcdefghijk.mp4"
+        song.write_text("x")
+        mock_get_instance.return_value = self._karaoke_playing(str(song))
+        data = client.get("/splash/song_notes").get_json()
+        assert data["source"] == "none"
+
+    @patch("pikaraoke.routes.splash.get_karaoke_instance")
+    def test_returns_ultrastar_notes_when_txt_present(self, mock_get_instance, client, tmp_path):
+        song = tmp_path / "Song---abcdefghijk.mp4"
+        song.write_text("x")
+        (tmp_path / "Song---abcdefghijk.txt").write_text("#BPM:60\n#GAP:0\n: 0 4 0 hi\nE\n")
+        mock_get_instance.return_value = self._karaoke_playing(str(song))
+        data = client.get("/splash/song_notes").get_json()
+        assert data["source"] == "ultrastar"
+        assert len(data["notes"]) == 1
+        assert data["notes"][0]["midi"] == 60
