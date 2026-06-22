@@ -2,10 +2,13 @@
 
 Uses Demucs to split the input into an instrumental and an isolated vocal stem, written
 next to the input (the original is never modified). With --chart, the clean vocal stem is
-fed to the UltraStar converter to also emit a note chart for the pitch highway.
+fed to the UltraStar converter to also emit a note chart for the pitch highway. With --video,
+the original video is kept and only its audio is swapped for the instrumental — a karaoke
+video with on-screen lyrics and the lead vocal removed.
 
 Requires the optional `separation` dependency group (Demucs + torch):
     uv run --group separation python build_scripts/remove_vocals.py song.mp3
+    uv run --group separation python build_scripts/remove_vocals.py video.mp4 --video
     uv run --group separation --group notes python build_scripts/remove_vocals.py song.mp3 --chart
 
 First run downloads the Demucs model (~hundreds of MB); CPU works but takes minutes per song.
@@ -31,11 +34,21 @@ def main() -> None:
     parser.add_argument("--device", choices=["cpu", "cuda"], help="Force a device (default: auto)")
     parser.add_argument("--mp3", action="store_true", help="Write .mp3 stems instead of .wav")
     parser.add_argument(
+        "--video",
+        action="store_true",
+        help="Keep the original video and swap in the instrumental audio, writing "
+        "'<name> (Karaoke).<ext>' (input must have a video stream). Best of both worlds: "
+        "on-screen lyrics with the lead vocal removed.",
+    )
+    parser.add_argument(
         "--chart",
         action="store_true",
         help="Also generate an UltraStar .txt from the vocal stem (needs the 'notes' group)",
     )
     args = parser.parse_args()
+
+    if args.video and args.chart:
+        parser.error("--chart is not available with --video (no vocal stem is kept in video mode)")
 
     logging.basicConfig(level=logging.INFO, format="%(message)s")
     outputs = remove_vocals(
@@ -44,7 +57,13 @@ def main() -> None:
         model=args.model,
         device=args.device,
         mp3=args.mp3,
+        video=args.video,
     )
+
+    if args.video:
+        print(f"Karaoke video: {outputs['karaoke_video']}")
+        return
+
     print(f"Instrumental: {outputs['instrumental']}")
     print(f"Vocal stem:   {outputs['vocals']}")
 
