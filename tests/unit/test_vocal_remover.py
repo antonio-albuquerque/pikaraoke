@@ -6,7 +6,13 @@ from unittest.mock import patch
 import pytest
 
 from pikaraoke.lib import vocal_remover
-from pikaraoke.lib.vocal_remover import VocalRemovalError, _build_command, remove_vocals
+from pikaraoke.lib.vocal_remover import (
+    VocalRemovalError,
+    _build_command,
+    _mux_instrumental_video,
+    _strip_trailing_id,
+    remove_vocals,
+)
 
 
 def _arg_after(cmd, flag):
@@ -97,3 +103,84 @@ class TestRunDemucs:
         with patch("pikaraoke.lib.vocal_remover.subprocess.run", return_value=Result()):
             with pytest.raises(VocalRemovalError, match="exit 1"):
                 vocal_remover._run_demucs(["demucs"])
+
+
+class TestStripTrailingId:
+    def test_strips_triple_dash_id(self):
+        assert _strip_trailing_id("My Song---IS7ESPZn7do") == "My Song"
+
+    def test_strips_bracketed_id(self):
+        assert _strip_trailing_id("My Song [IS7ESPZn7do]") == "My Song"
+
+    def test_leaves_plain_name(self):
+        assert _strip_trailing_id("My Song") == "My Song"
+
+
+class TestMuxCommand:
+    def test_maps_video_copy_and_aac_audio(self):
+        captured = {}
+
+        class Result:
+            returncode = 0
+            stderr = ""
+
+        def fake_run(cmd, **kwargs):
+            captured["cmd"] = cmd
+            return Result()
+
+        with patch("pikaraoke.lib.vocal_remover.subprocess.run", side_effect=fake_run):
+            _mux_instrumental_video("in.mp4", "inst.wav", "out.mp4")
+
+        cmd = captured["cmd"]
+        assert cmd[:2] == ["ffmpeg", "-y"]
+        assert "0:v:0" in cmd and "1:a:0" in cmd
+        assert cmd[cmd.index("-c:v") + 1] == "copy"
+        assert cmd[cmd.index("-c:a") + 1] == "aac"
+        assert cmd[-1] == "out.mp4"
+
+
+class TestVideoMode:
+    def test_produces_karaoke_video_with_clean_name(self, tmp_path):
+        song = tmp_path / "My Song---IS7ESPZn7do.mp4"
+        song.write_text("original")
+
+        def fake_mux(video_path, instrumental_path, out_path):
+            with open(out_path, "w") as f:
+                f.write("karaoke video")
+
+        with (
+            patch.object(vocal_remover, "_has_video_stream", return_value=True),
+            patch.object(vocal_remover, "_run_demucs", side_effect=_fake_demucs()),
+            patch.object(vocal_remover, "_mux_instrumental_video", side_effect=fake_mux),
+        ):
+            out = remove_vocals(str(song), video=True)
+
+        # ID stripped, (Karaoke) appended, original extension kept.
+        assert out["karaoke_video"] == str(tmp_path / "My Song (Karaoke).mp4")
+        assert os.path.isfile(out["karaoke_video"])
+        assert "instrumental" not in out and "vocals" not in out
+        assert song.read_text() == "original"
+
+    def test_webm_falls_back_to_mkv(self, tmp_path):
+        song = tmp_path / "clip.webm"
+        song.write_text("x")
+
+        with (
+            patch.object(vocal_remover, "_has_video_stream", return_value=True),
+            patch.object(vocal_remover, "_run_demucs", side_effect=_fake_demucs()),
+            patch.object(
+                vocal_remover,
+                "_mux_instrumental_video",
+                side_effect=lambda v, i, o: open(o, "w").close(),
+            ),
+        ):
+            out = remove_vocals(str(song), video=True)
+
+        assert out["karaoke_video"].endswith("clip (Karaoke).mkv")
+
+    def test_audio_only_input_rejected(self, tmp_path):
+        song = tmp_path / "audio.mp3"
+        song.write_text("x")
+        with patch.object(vocal_remover, "_has_video_stream", return_value=False):
+            with pytest.raises(VocalRemovalError, match="video stream"):
+                remove_vocals(str(song), video=True)
