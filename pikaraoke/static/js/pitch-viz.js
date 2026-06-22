@@ -19,8 +19,9 @@ const VIZ_LOG_MIN = Math.log(VIZ_MIN_HZ);
 const VIZ_LOG_RANGE = Math.log(VIZ_MAX_HZ) - VIZ_LOG_MIN;
 
 // Time window shown on screen (seconds) and where "now" sits across the width.
-const PAST_SECONDS = 4;
-const FUTURE_SECONDS = 6;
+// PAST/WINDOW sets the "now" marker position (6.5/10 = 65% from the left).
+const PAST_SECONDS = 6.5;
+const FUTURE_SECONDS = 3.5;
 const WINDOW_SECONDS = PAST_SECONDS + FUTURE_SECONDS;
 const NOW_FRAC = PAST_SECONDS / WINDOW_SECONDS;
 
