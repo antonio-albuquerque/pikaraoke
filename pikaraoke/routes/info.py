@@ -57,6 +57,7 @@ def info():
         disable_bg_music=k.disable_bg_music,
         disable_bg_video=k.disable_bg_video,
         disable_score=k.disable_score,
+        score_use_microphone=k.score_use_microphone,
         hide_notifications=k.hide_notifications,
         show_splash_clock=k.show_splash_clock,
         hide_url=k.hide_url,

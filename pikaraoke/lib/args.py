@@ -293,6 +293,14 @@ def parse_pikaraoke_args() -> argparse.Namespace:
         required=False,
     )
     parser.add_argument(
+        "--score-use-microphone",
+        help="Score the singer from live microphone pitch analysis instead of a random number. "
+        "Requires the splash screen to run in a secure context (https or localhost) and mic "
+        "permission; falls back to the random score if the mic is unavailable.",
+        action="store_true",
+        required=False,
+    )
+    parser.add_argument(
         "--limit-user-songs-by",
         help=f"Limit the number of songs a user can add to queue. User name 'Pikaraoke' is always unlimited (default: {_DEFAULTS['limit_user_songs_by']} = unlimited)",
         default=None,
